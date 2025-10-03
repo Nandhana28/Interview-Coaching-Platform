@@ -1,0 +1,80 @@
+:root {
+  /* Colors - Light Theme */
+  --light-primary: #8B5CF6;
+  --light-primary-dark: #7C3AED;
+  --light-secondary: #A78BFA;
+  --light-background: #FFFFFF;
+  --light-surface: #F8FAFC;
+  --light-text: #1F2937;
+  --light-text-secondary: #6B7280;
+  --light-border: #E5E7EB;
+  --light-error: #EF4444;
+  --light-success: #10B981;
+
+  /* Colors - Dark Theme */
+  --dark-primary: #8B5CF6;
+  --dark-primary-dark: #7C3AED;
+  --dark-secondary: #A78BFA;
+  --dark-background: #0F0F23;
+  --dark-surface: #1A1A2E;
+  --dark-text: #FFFFFF;
+  --dark-text-secondary: #A78BFA;
+  --dark-border: #374151;
+  --dark-error: #EF4444;
+  --dark-success: #10B981;
+
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+
+  /* Typography */
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 2rem;
+
+  /* Border Radius */
+  --border-radius-sm: 0.375rem;
+  --border-radius-md: 0.5rem;
+  --border-radius-lg: 0.75rem;
+  --border-radius-xl: 1rem;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+}
+
+/* Apply theme variables */
+body[data-theme="light"] {
+  --primary: var(--light-primary);
+  --primary-dark: var(--light-primary-dark);
+  --secondary: var(--light-secondary);
+  --background: var(--light-background);
+  --surface: var(--light-surface);
+  --text: var(--light-text);
+  --text-secondary: var(--light-text-secondary);
+  --border: var(--light-border);
+  --error: var(--light-error);
+  --success: var(--light-success);
+}
+
+body[data-theme="dark"] {
+  --primary: var(--dark-primary);
+  --primary-dark: var(--dark-primary-dark);
+  --secondary: var(--dark-secondary);
+  --background: var(--dark-background);
+  --surface: var(--dark-surface);
+  --text: var(--dark-text);
+  --text-secondary: var(--dark-text-secondary);
+  --border: var(--dark-border);
+  --error: var(--dark-error);
+  --success: var(--dark-success);
+}
