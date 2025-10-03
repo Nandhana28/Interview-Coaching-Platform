@@ -1,0 +1,33 @@
+# Maven target directory
+/target/
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE files
+/.idea/
+/*.iml
+*.swp
+*.swo
+*.bak
+*.tmp
+*.vscode/
+
+# Environment and properties
+.env
+*.env
+application-local.properties
+
+# Sensitive files
+*.key
+*.pem
+
+# Node modules (if any JS in backend)
+node_modules/
+
+# Exclude test reports
+/test-output/
