@@ -1,54 +1,63 @@
 package com.interviewcoaching.controllers;
 
+import com.interviewcoaching.dto.AuthRequest;
+import com.interviewcoaching.dto.AuthResponse;
 import com.interviewcoaching.models.User;
 import com.interviewcoaching.services.AuthService;
-import com.interviewcoaching.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class AuthController {
 
     @Autowired
     private AuthService authService;
 
-    @Autowired
-    private UserService userService;
-
-    // Register user
-    @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user) {
-        User createdUser = authService.registerUser(user.getUsername(), user.getEmail(), user.getPassword());
-        return ResponseEntity.ok(createdUser);
-    }
-
-    // Login user
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestParam String email, @RequestParam String password) {
-        String token = authService.loginUser(email, password);
-        return ResponseEntity.ok(token);
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody AuthRequest authRequest) {
+        try {
+            AuthResponse authResponse = authService.authenticateUser(authRequest);
+            return ResponseEntity.ok(authResponse);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ErrorResponse("Invalid credentials"));
+        }
     }
 
-    // Request OTP (email)
-    @PostMapping("/request-otp")
-    public ResponseEntity<String> requestOtp(@RequestParam String email) {
-        User user = userService.getUserByEmail(email);
-        if (user == null) return ResponseEntity.badRequest().body("Email not registered");
-
-        String otp = userService.generateOtp(user);
-        return ResponseEntity.ok("OTP sent: " + otp); // In real projects, send via email/SMS
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@Valid @RequestBody User user) {
+        try {
+            User registeredUser = authService.registerUser(user);
+            return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+        }
     }
 
-    // Verify OTP
-    @PostMapping("/verify-otp")
-    public ResponseEntity<String> verifyOtp(@RequestParam String email, @RequestParam String otp) {
-        User user = userService.getUserByEmail(email);
-        if (user == null) return ResponseEntity.badRequest().body("Email not registered");
+    // Inner classes for response
+    public static class MessageResponse {
+        private String message;
+        
+        public MessageResponse(String message) {
+            this.message = message;
+        }
+        
+        public String getMessage() { return message; }
+        public void setMessage(String message) { this.message = message; }
+    }
 
-        boolean verified = userService.verifyOtp(user, otp);
-        if (verified) return ResponseEntity.ok("OTP verified successfully");
-        return ResponseEntity.badRequest().body("Invalid or expired OTP");
+    public static class ErrorResponse {
+        private String error;
+        
+        public ErrorResponse(String error) {
+            this.error = error;
+        }
+        
+        public String getError() { return error; }
+        public void setError(String error) { this.error = error; }
     }
 }

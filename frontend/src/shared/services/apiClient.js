@@ -1,16 +1,14 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8081/api';
-
-export const apiClient = axios.create({
-  baseURL: API_BASE_URL,
+const apiClient = axios.create({
+  baseURL: 'http://localhost:8080/api',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Request interceptor to add auth token
+// Request interceptor
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -24,7 +22,7 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Response interceptor to handle errors
+// Response interceptor
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -36,3 +34,5 @@ apiClient.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export default apiClient;

@@ -1,41 +1,43 @@
 import { useState } from 'react';
-import { useAuth } from '../../../../shared/hooks/useAuth';
-import { authApi } from '../services/authApi';
 import { useNavigate } from 'react-router-dom';
+import { authApi } from '../services/authApi';
 
 export const useLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const { login } = useAuth();
+  const [error, setError] = useState(null);
+  const [isSuccess, setIsSuccess] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = async (email, password) => {
+  const login = async (credentials) => {
     setIsLoading(true);
-    setError('');
-
+    setError(null);
+    
     try {
-      const token = await authApi.login(email, password);
+      const response = await authApi.login(credentials);
       
-      // For now, create a mock user object - you'll get this from your backend
-      const userData = {
-        email: email,
-        firstName: 'User',
-        lastName: 'Demo',
-        roles: ['USER']
-      };
+      // Store token and user info
+      localStorage.setItem('token', response.token);
+      localStorage.setItem('user', JSON.stringify({
+        id: response.id,
+        username: response.username,
+        email: response.email,
+        fullName: response.fullName
+      }));
+
+      setIsSuccess(true);
       
-      login(userData, token);
-      navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || 'Login failed. Please try again.');
+      setError(err.response?.data?.error || 'Login failed. Please try again.');
+      setIsSuccess(false);
     } finally {
       setIsLoading(false);
     }
   };
 
   return {
-    handleLogin,
+    login,
     isLoading,
-    error
+    error,
+    isSuccess
   };
 };

@@ -1,10 +1,8 @@
-import { apiClient } from '../../../../shared/services/apiClient';
+import apiClient from '../../../shared/services/apiClient';
 
 export const authApi = {
-  login: async (email, password) => {
-    const response = await apiClient.post('/auth/login', null, {
-      params: { email, password }
-    });
+  login: async (credentials) => {
+    const response = await apiClient.post('/auth/login', credentials);
     return response.data;
   },
 
@@ -13,16 +11,15 @@ export const authApi = {
     return response.data;
   },
 
-  requestOtp: async (email) => {
-    const response = await apiClient.post('/auth/request-otp', null, {
-      params: { email }
-    });
+  forgotPassword: async (email) => {
+    const response = await apiClient.post('/auth/forgot-password', { email });
     return response.data;
   },
 
-  verifyOtp: async (email, otp) => {
-    const response = await apiClient.post('/auth/verify-otp', null, {
-      params: { email, otp }
+  resetPassword: async (token, newPassword) => {
+    const response = await apiClient.post('/auth/reset-password', {
+      token,
+      newPassword
     });
     return response.data;
   }
