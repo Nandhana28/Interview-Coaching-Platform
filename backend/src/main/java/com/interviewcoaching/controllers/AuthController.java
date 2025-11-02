@@ -38,6 +38,17 @@ public class AuthController {
         }
     }
 
+    // Add this method to your existing AuthController
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody PasswordResetRequest resetRequest) {
+        try {
+            authService.resetPassword(resetRequest);
+            return ResponseEntity.ok(new MessageResponse("Password reset successfully!"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+        }
+    }
+
     // Inner classes for response
     public static class MessageResponse {
         private String message;
