@@ -1,26 +1,40 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Homepage from '../features/home/pages/Homepage';
 import Login from '../features/auth/pages/Login/Login';
 import Register from '../features/auth/pages/Register/Register';
 import ForgotPassword from '../features/auth/pages/ForgotPassword/ForgotPassword';
-import Layout from '../shared/components/layout/Layout/Layout';
+import Dashboard from '../features/user/pages/Dashboard/Dashboard'; // Import your dashboard
 import './App.css';
+
+// Temporary placeholder components
+const MockTestsPage = () => <div>Mock Tests Module - Coming Soon!</div>;
+const InterviewsPage = () => <div>Interviews Module - Coming Soon!</div>;
+const BanterArenaPage = () => <div>Banter Arena Module - Coming Soon!</div>;
+const AICoachPage = () => <div>AI Coach Module - Coming Soon!</div>;
 
 function App() {
   return (
     <Router>
       <div className="App">
         <Routes>
-          {/* Public Routes */}
+          {/* Homepage Route */}
+          <Route path="/" element={<Homepage />} />
+          
+          {/* Public Auth Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           
-          {/* Protected Routes */}
-          <Route path="/*" element={<Layout />} />
+          {/* Protected Dashboard Routes */}
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/mock-tests" element={<MockTestsPage />} />
+          <Route path="/interviews" element={<InterviewsPage />} />
+          <Route path="/banter-arena" element={<BanterArenaPage />} />
+          <Route path="/ai-coach" element={<AICoachPage />} />
           
-          {/* Default redirect */}
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          {/* Catch all route - redirect to dashboard if logged in, else homepage */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>
     </Router>

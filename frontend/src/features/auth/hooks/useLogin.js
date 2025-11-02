@@ -25,6 +25,7 @@ export const useLogin = () => {
       }));
 
       setIsSuccess(true);
+      navigate('/dashboard');
       
     } catch (err) {
       setError(err.response?.data?.error || 'Login failed. Please try again.');
